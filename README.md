@@ -1,42 +1,31 @@
 # LangChain Learning
 
-Personal notes, experiments, and code while learning [LangChain](https://python.langchain.com/).
-
----
-
-## Goals
-
-- [ ] Understand LangChain core concepts (chains, prompts, models, parsers)
-- [ ] Build small projects to practice each concept
-- [ ] Document what I learn as I go
+Hands-on experiments while learning [LangChain](https://python.langchain.com/). Each script in `src/langchain_basics/` covers one concept, runnable on its own.
 
 ---
 
 ## Setup
 
-**Requirements:** Python 3.12+
+**Requirements:** Python 3.12+, [uv](https://docs.astral.sh/uv/)
 
 ```bash
-# Clone and enter the repo
-cd langchain
+git clone https://github.com/ahmedashfaq850/langchain-learning.git
+cd langchain-learning
 
-# Install dependencies (uses uv)
 uv sync
-
-# Run the starter script
-uv run python main.py
 ```
 
-Add LangChain packages as you need them:
-
-```bash
-uv add langchain langchain-openai
-```
-
-Create a `.env` file for API keys (never commit this):
+Create a `.env` file in the project root (never commit this):
 
 ```env
-OPENAI_API_KEY=your-key-here
+OPENROUTER_API_KEY=your-key-here
+OPENROUTER_MODEL=google/gemini-2.0-flash-001
+```
+
+Run any example:
+
+```bash
+uv run src/langchain_basics/llm_calling.py
 ```
 
 ---
@@ -44,87 +33,59 @@ OPENAI_API_KEY=your-key-here
 ## Project Structure
 
 ```
-langchain/
-├── main.py           # Entry point / experiments
-├── pyproject.toml    # Dependencies
-├── README.md         # This file — learning log & notes
-└── notes/            # Optional: longer write-ups per topic
+langchain-learning/
+├── main.py                          # Placeholder entry point
+├── pyproject.toml                   # Dependencies (LangChain, OpenRouter, etc.)
+├── src/langchain_basics/
+│   ├── llm_calling.py               # Basic LLM invoke + token usage & cost
+│   ├── llm_prompting.py             # System & human messages
+│   ├── prompt_templates.py          # ChatPromptTemplate with variables
+│   ├── llm_chains.py                # LCEL chain (prompt | model)
+│   └── text_streaming.py            # Stream tokens as they arrive
+└── README.md
 ```
 
 ---
 
-## Learning Log
+## What's Working
 
-Add a new entry each time you study or build something. Most recent first.
+| Script | What it does |
+|--------|--------------|
+| `llm_calling.py` | Calls OpenRouter via `ChatOpenRouter`, prints the response, token usage, and estimated cost |
+| `llm_prompting.py` | Sends a structured conversation using `SystemMessage` and `HumanMessage` |
+| `prompt_templates.py` | Builds a reusable `ChatPromptTemplate` with a `{input}` placeholder |
+| `llm_chains.py` | Chains prompt and model with LCEL (`prompt \| model`) |
+| `text_streaming.py` | Streams the model output chunk by chunk with `llm.stream()` |
 
----
-
-### YYYY-MM-DD — Topic title
-
-**Time spent:** _e.g. 1h 30m_
-
-**What I did:**
-- 
-
-**What I learned:**
-- 
-
-**Questions / next steps:**
-- 
-
-**Links / references:**
-- 
+All scripts use **OpenRouter** as the model provider and load config from `.env`.
 
 ---
 
-### YYYY-MM-DD — Topic title
+## Progress
 
-**Time spent:**
-
-**What I did:**
-- 
-
-**What I learned:**
-- 
-
-**Questions / next steps:**
-- 
-
-**Links / references:**
-- 
-
----
-
-## Topics Checklist
-
-Track concepts as you cover them.
-
-| Topic | Status | Notes |
-|-------|--------|-------|
-| Prompts & prompt templates | ⬜ | |
-| LLM & chat models | ⬜ | |
-| Output parsers | ⬜ | |
-| Chains (LCEL) | ⬜ | |
-| Memory | ⬜ | |
-| Agents & tools | ⬜ | |
-| RAG (retrieval) | ⬜ | |
-| Vector stores | ⬜ | |
-| Document loaders | ⬜ | |
-| LangGraph | ⬜ | |
-
-Status: ⬜ not started · 🟡 in progress · ✅ done
+| Topic | Status |
+|-------|--------|
+| LLM & chat models | ✅ |
+| Prompts & message types | ✅ |
+| Prompt templates | ✅ |
+| Chains (LCEL) | ✅ |
+| Streaming | ✅ |
+| Output parsers | ⬜ |
+| Memory | ⬜ |
+| Agents & tools | ⬜ |
+| RAG (retrieval) | ⬜ |
+| Vector stores | ⬜ |
+| Document loaders | ⬜ |
+| LangGraph | ⬜ |
 
 ---
 
-## Snippets & Patterns
+## Key Takeaways So Far
 
-Reusable code or patterns worth remembering.
-
-### Example: basic chain
-
-```python
-# TODO: paste a minimal example once you write one
-```
+- **Messages** — LangChain uses typed messages (`SystemMessage`, `HumanMessage`, `AIMessage`) instead of raw strings for chat models.
+- **Prompt templates** — Reusable prompts with variables keep instructions consistent and make inputs easy to swap.
+- **LCEL** — The pipe operator (`prompt | model`) connects steps into a chain you can invoke like a single function.
+- **Streaming** — `llm.stream()` yields chunks as the model generates, useful for responsive UIs.
 
 ---
 
@@ -132,12 +93,4 @@ Reusable code or patterns worth remembering.
 
 - [LangChain Python docs](https://python.langchain.com/docs/introduction/)
 - [LangChain GitHub](https://github.com/langchain-ai/langchain)
-- 
-
----
-
-## Notes
-
-Free-form space for ideas, comparisons, or things to revisit later.
-
-- 
+- [OpenRouter](https://openrouter.ai/)
